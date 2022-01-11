@@ -30,8 +30,9 @@
     width: 100%;
 
     .el-upload-dragger {
+      padding: 20px 20px;
       width: 100%;
-      height: 200px;
+      height: 300px;
     }
   }
 }
@@ -46,4 +47,21 @@
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
+}
+//dialog 居中
+.el-dialog{
+  display: flex;
+  flex-direction: column;
+  margin:0 !important;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  /*height:600px;*/
+  max-height:calc(100% - 30px);
+  max-width:calc(100% - 30px);
+}
+.el-dialog .el-dialog__body{
+  flex:1;
+  overflow: auto;
 }
