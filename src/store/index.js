@@ -6,7 +6,8 @@ import settings from './modules/settings'
 import user from './modules/user'
 import permission from './modules/permission'
 import tagsView from './modules/tagsView'
-
+import bbs from './modules/bbs'
+import likeAndCollection from './modules/likeAndCollection'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
@@ -15,7 +16,9 @@ const store = new Vuex.Store({
     settings,
     user,
     permission,
-    tagsView
+    tagsView,
+    bbs,
+    likeAndCollection
   },
   getters
 })

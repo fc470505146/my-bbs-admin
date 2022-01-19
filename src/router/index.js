@@ -59,26 +59,41 @@ export const constantRoutes = [
   {
     path: '/bbs',
     name: 'BBS',
-    component: Layout,
     redirect: '/bbs/catalog',
+    component: Layout,
     meta: { title: '板面目录', icon: 'el-icon-document' },
     children: [
       {
-        path: 'catalog',
         hidden: true,
+        path: 'catalog',
         name: 'BoardCatalog',
-        component: () => import('@/views/bbs/BoardCatalog'),
-        children: [
-          {
-            path: ':id',
-            name: 'boardView',
-            hidden: true,
-            component: () => import('@/views/bbs/BoardView')
-          }
-        ]
+        component: () => import('@/views/bbs/BoardCatalog')
+      },
+      {
+        hidden: true,
+        path: ':id',
+        name: 'BoardView',
+        meta: { title: '板块' },
+        component: () => import('@/views/bbs/boardView/BoardView')
+
+      },
+      {
+        hidden: true,
+        path: 'post/:id',
+        name: 'PostView',
+        meta: { title: '帖子' },
+        component: () => import('@/views/bbs/postView/PostView')
+      },
+      {
+        hidden: true,
+        path: 'user/:id',
+        name: 'UserView',
+        meta: { title: '用户' },
+        component: () => import('@/views/bbs/userView/UserView')
       }
     ]
   }
+
 ]
 // 异步路由
 export const asyncRoutes = [

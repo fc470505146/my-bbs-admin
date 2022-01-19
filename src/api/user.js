@@ -65,6 +65,13 @@ export function uploadExcel(data) {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 }
+export function getAvatarAPI(data) {
+  return request({
+    url: '/users/getAvatar',
+    method: 'post',
+    data
+  })
+}
 // export function logout() {
 //   return request({
 //     url: '/vue-admin-template/user/logout',

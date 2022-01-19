@@ -3,19 +3,28 @@
     <el-table
       :data="
         tableData.filter(
-          (data) =>
+          data =>
             !search ||
-            data.boardName.toLowerCase().includes(search.toLowerCase())
+            data.boardName
+              .toLowerCase()
+              .includes(search.toLowerCase())
         )
       "
       style="width: 100%"
     >
       <el-table-column label="板块名称" prop="boardName" />
       <el-table-column label="介绍" prop="description" />
-      <el-table-column label="优先级(数值越大优先级越高)" prop="priority" />
+      <el-table-column
+        label="优先级(数值越大优先级越高)"
+        prop="priority"
+      />
       <el-table-column align="right">
         <template slot="header" slot-scope="scope">
-          <el-input v-model="search" size="mini" placeholder="输入关键字搜索" />
+          <el-input
+            v-model="search"
+            size="mini"
+            placeholder="输入关键字搜索"
+          />
           <el-button
             type="primary"
             size="mini"
@@ -53,13 +62,22 @@
     >
       <el-form :model="updateBoard">
         <el-form-item label="板块名称">
-          <el-input v-model="updateBoard.boardName" autocomplete="off" />
+          <el-input
+            v-model="updateBoard.boardName"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="介绍">
-          <el-input v-model="updateBoard.description" autocomplete="off" />
+          <el-input
+            v-model="updateBoard.description"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="优先级">
-          <el-input v-model="updateBoard.priority" autocomplete="off" />
+          <el-input
+            v-model="updateBoard.priority"
+            autocomplete="off"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -83,7 +101,10 @@
           <el-input v-model="addBoard.boardName" autocomplete="off" />
         </el-form-item>
         <el-form-item label="介绍">
-          <el-input v-model="addBoard.description" autocomplete="off" />
+          <el-input
+            v-model="addBoard.description"
+            autocomplete="off"
+          />
         </el-form-item>
         <el-form-item label="优先级">
           <el-input v-model="addBoard.priority" autocomplete="off" />
@@ -141,7 +162,6 @@ export default {
     // 处理分页
     handlePagination(currentPage) {
       this.pagination.currentPage = currentPage
-      console.log(currentPage)
       this.getBoardDateList()
     }, // 处理添加板块
     clickShowAdd() {

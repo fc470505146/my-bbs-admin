@@ -8,7 +8,7 @@
             :style="{ 'border-top': `5px solid ${indexColorList[index % 4]}` }"
           >
             <router-link
-              :to="`/bbs/catalog/${item._id}`"
+              :to="`/bbs/${item._id}`"
             ><div class="BoardTitle">
               <span
                 class="BoardIndex"
@@ -81,10 +81,6 @@ export default {
   .boardDescription {
     font-size: 12px;
     margin-top: -10px;
-    .descDEsc {
-    }
-    .contentDesc {
-    }
   }
 }
 .el-row {

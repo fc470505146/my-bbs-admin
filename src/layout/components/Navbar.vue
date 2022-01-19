@@ -91,8 +91,6 @@ export default {
       margin-right: 10px;
     }
     .line{color:#EBEEF1}
-    .news {
-    }
     .news:hover {
       cursor: pointer;
     }
