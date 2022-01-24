@@ -34,6 +34,7 @@ export default {
     getConnection() {
       this.$store.dispatch('likeAndCollection/getCollection')
       this.$store.dispatch('likeAndCollection/getRecommend')
+      this.$store.dispatch('likeAndCollection/getLike', { postId: this.$route.params.id })
     },
     handleClickFocus() {
       this.isFocus = !this.isFocus

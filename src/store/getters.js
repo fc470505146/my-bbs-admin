@@ -7,6 +7,7 @@ const getters = {
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
+  _id: state => state.user._id,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   isAdmin: state => state.user.roles?.includes('admin'),
@@ -20,6 +21,9 @@ const getters = {
   isRecommend: state =>
     state.likeAndCollection.recommend?.includes(
       state.bbs.currentPost._id
-    )
+    ),
+  isLight: state => reviewId => {
+    return state.likeAndCollection.currentPostLike.includes(reviewId)
+  }
 }
 export default getters

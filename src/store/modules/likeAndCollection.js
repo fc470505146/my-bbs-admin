@@ -4,7 +4,7 @@ import { getLikeAPI, getRecommendAPI } from '@/api/detail'
 function getDefaultState() {
   return localStorage.likeAndCollection
     ? JSON.parse(localStorage.likeAndCollection)
-    : { collection: [], currentPostlike: [], recommend: [] }
+    : { collection: [], currentPostLike: [], recommend: [] }
 }
 
 const state = getDefaultState()
@@ -35,7 +35,7 @@ const actions = {
     }
   },
   async getLike({ commit }, paylod) {
-    const postId = paylod
+    const { postId } = paylod
     const res = await getLikeAPI({ postId })
     if (res.code === 0) {
       commit('SET_CURRENTPOSTLIKE', res.result.data?.like?.[postId])

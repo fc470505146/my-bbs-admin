@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 Vue.use(Router)
 
 /* Layout */
@@ -37,7 +36,6 @@ export const constantRoutes = [
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
   {
     path: '/404',
     component: () => import('@/views/404'),
@@ -75,7 +73,6 @@ export const constantRoutes = [
         name: 'BoardView',
         meta: { title: '板块' },
         component: () => import('@/views/bbs/boardView/BoardView')
-
       },
       {
         hidden: true,
@@ -90,13 +87,27 @@ export const constantRoutes = [
         name: 'UserView',
         meta: { title: '用户' },
         component: () => import('@/views/bbs/userView/UserView')
+      },
+      {
+        hidden: true,
+        path: 'new/:id',
+        name: 'UserNew',
+        meta: { title: '消息' },
+        component: () => import('@/views/bbs/newView/NewView')
       }
     ]
   }
-
 ]
+
 // 异步路由
 export const asyncRoutes = [
+  // 比较差的处理 todo
+  {
+    path: '/user',
+    name: 'UserInfo',
+    component: Layout,
+    meta: { title: '个人中心', icon: 'el-icon-s-custom' }
+  },
   {
     path: '/admin',
     component: Layout,
@@ -122,7 +133,11 @@ export const asyncRoutes = [
             path: 'userlist',
             name: 'UserAdminList',
             component: () => import('@/views/admin/UserAdmin'),
-            meta: { title: '用户列表', icon: 'user', roles: ['admin'] }
+            meta: {
+              title: '用户列表',
+              icon: 'user',
+              roles: ['admin']
+            }
           },
           {
             path: 'addList',
@@ -143,6 +158,7 @@ export const asyncRoutes = [
       }
     ]
   },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

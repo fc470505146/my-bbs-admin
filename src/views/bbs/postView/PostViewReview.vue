@@ -18,9 +18,12 @@
         <div class="item-content">
           <!--评论的用户信息  -->
           <div class="item-heard">
-            <span class="heard-nickname">{{
-              item.User.nickname
-            }}</span>
+            <span class="heard-nickname">
+              <router-link :to="`/bbs/user/${item.User._id}`">
+                {{
+                  item.User.nickname
+                }}</router-link>
+            </span>
             <span class="heard-date">{{ item.createTime }}</span>
           </div>
           <!-- 评论的内容 -->
@@ -28,9 +31,11 @@
             <!-- 引用的评论 -->
             <div v-if="item.quoteId !== '0'" class="review-quote">
               <div class="quote-user">
-                引用@<span class="quote-nickname">{{
-                  item.quote.User.nickname
-                }}</span>发表的发表的:
+                引用@<span class="quote-nickname">
+                  <router-link :to="`/bbs/user/${item.quote.User._id}`">{{
+                    item.quote.User.nickname
+                  }}</router-link>
+                </span>发表的发表的:
               </div>
               <el-row>
                 <el-col :span="18">
@@ -69,10 +74,13 @@
           </div>
           <!-- 评论相关按钮 -->
           <div class="item-button">
-            <span
-              class="button-light el-icon-s-opportunity"
-              @click="handleLike(item)"
-            >亮了({{ item.like }})</span>
+            <span :class="{'button-light':true,red:item.isLight}" @click="handleLike(item)">
+              <span
+                style="margin-right: 0"
+                class="el-icon-s-opportunity"
+              />
+              亮了({{ item.like }})</span>
+
             <span
               class="button-reply el-icon-connection"
               @click="handleClickFocus(item._id, item)"
@@ -134,7 +142,8 @@
           type="primary"
           @click="clickShowUpdate(), subUpdateReview()"
         >确 定</el-button>
-      </div> </el-dialog>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -151,6 +160,7 @@ import {
 } from '@/api/bbs'
 import { Message } from 'element-ui'
 import moment from 'moment'
+import { addLikeAPI, delLikeAPI } from '@/api/detail'
 export default {
   name: 'PostViewReview',
   components: { BasePagination },
@@ -168,7 +178,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isAdmin', 'currentPost']),
+    ...mapGetters(['isAdmin', 'currentPost', 'isLight']),
     reviewListCurrent() {
       const currentPage = this.pagination.currentPage
       const pageNum = this.pagination.pageNum
@@ -190,12 +200,28 @@ export default {
   methods: {
     // 亮了
     async handleLike(item) {
-
+      let res = null
+      if (item.isLight) {
+        res = await delLikeAPI({
+          postId: item.postId,
+          reviewId: item._id
+        })
+      } else {
+        res = await addLikeAPI({
+          postId: item.postId,
+          reviewId: item._id
+        })
+      }
+      if (res.code === 0) {
+        this.$store.dispatch('likeAndCollection/getLike', {
+          postId: item.postId
+        })
+        this.getAllReview()
+      }
     },
     // 修改评论
     async subUpdateReview() {
       const data = { ...this.updateReview }
-      console.log(data)
       const res = await updateReviewAPI(data)
       if (res.code === 0) {
         Message({ message: '修改成功', type: 'success' })
@@ -253,6 +279,7 @@ export default {
               findItem => findItem._id === item.quoteId
             )
           }
+          item.isLight = this.isLight(item._id)
           item.createTime = moment(item.createTime).format(
             'MM-DD HH:mm'
           )

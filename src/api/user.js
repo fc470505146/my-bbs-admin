@@ -54,13 +54,21 @@ export function updateUserById(data) {
   })
 }
 export function uploadExcel(data) {
-  console.log(request)
   const form = new FormData()
   form.append('file', data)
-  console.log(form.get('file'))
   return request({
     url: '/users/addUserList',
     method: 'post',
+    data: form,
+    headers: { 'Content-Type': 'multipart/form-data' }
+  })
+}
+export function uploadAvatarAPI(data) {
+  const form = new FormData()
+  form.append('file', data)
+  return request({
+    url: '/users/upload',
+    method: 'patch',
     data: form,
     headers: { 'Content-Type': 'multipart/form-data' }
   })
@@ -72,8 +80,17 @@ export function getAvatarAPI(data) {
     data
   })
 }
-// export function logout() {
-//   return request({
-//     url: '/vue-admin-template/user/logout',
-//     method: 'post'
-//   })
+export function updateUserInfoAPI(data) {
+  return request({
+    url: '/users/update/userInfo',
+    method: 'post',
+    data
+  })
+}
+export function changePasswordAvatarAPI(data) {
+  return request({
+    url: '/users/',
+    method: 'patch',
+    data
+  })
+}

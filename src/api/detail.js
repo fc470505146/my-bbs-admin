@@ -46,3 +46,42 @@ export function getLikeAPI(data) {
     data
   })
 }
+// 用户界面
+
+export function getPostByUserIdAPI(data) {
+  return request({
+    url: '/bbs/user/getPostByUserId',
+    method: 'post',
+    data
+  })
+}
+
+export function getRecommendByUserIdAPI(data) {
+  return request({
+    url: '/bbs/user/getRecommendByUserId',
+    method: 'post',
+    data
+  })
+}
+export function getCollectionByUserIdAPI(data) {
+  return request({
+    url: '/bbs/user/getCollectionByUserId',
+    method: 'post',
+    data
+  })
+}
+
+export function getUserInfoByUserIdAPI(data) {
+  return request({
+    url: '/users/getAvatar',
+    method: 'post',
+    data
+  })
+}
+
+export function getIndexAPI(data) {
+  return request({
+    url: '/bbs/index',
+    method: 'get'
+  })
+}

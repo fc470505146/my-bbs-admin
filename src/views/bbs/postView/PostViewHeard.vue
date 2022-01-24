@@ -12,9 +12,10 @@
         />
         <div class="landloard-info">
           <div>
-            <span class="nickname">{{
-              currentPost.User.nickname
-            }}</span>
+            <span class="nickname">
+              <router-link :to="`/bbs/user/${currentPost.User._id}`">
+                {{ currentPost.User.nickname }}</router-link>
+            </span>
             <span class="createtime">2022-01-14 11:42:59</span>
           </div>
           <div style="font-size: 14px">{{ currentPost.title }}</div>
@@ -63,8 +64,13 @@ export default {
   },
   created() {
     this.getAvatar()
+    this.getCurrentPost()
   },
   methods: {
+    // 获取当前Post
+    getCurrentPost() {
+      this.$store.dispatch('bbs/getCurrentPost', this.$route.params.id)
+    },
     // 处理推荐
     async handleRecommend() {
       const postId = this.$route.params.id
