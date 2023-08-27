@@ -8,10 +8,8 @@
 </template>
 
 <script>
-import { setStateToLocal } from '@/store/modules/bbs'
 import PostViewHeard from './PostViewHeard'
 import PostViewReview from './PostViewReview'
-import { setLikeAndCollectionStateToLocal } from '@/store/modules/likeAndCollection'
 export default {
   name: 'PostView',
   components: { PostViewHeard, PostViewReview },
@@ -24,17 +22,19 @@ export default {
     this.getConnection()
   },
   mounted() {
-    window.addEventListener('beforeunload', setStateToLocal)
-    window.addEventListener(
-      'beforeunload',
-      setLikeAndCollectionStateToLocal
-    )
+    // window.addEventListener('beforeunload', setStateToLocal)
+    // window.addEventListener(
+    //   'beforeunload',
+    //   setLikeAndCollectionStateToLocal
+    // )
   },
   methods: {
     getConnection() {
       this.$store.dispatch('likeAndCollection/getCollection')
       this.$store.dispatch('likeAndCollection/getRecommend')
-      this.$store.dispatch('likeAndCollection/getLike', { postId: this.$route.params.id })
+      this.$store.dispatch('likeAndCollection/getLike', {
+        postId: this.$route.params.id
+      })
     },
     handleClickFocus() {
       this.isFocus = !this.isFocus

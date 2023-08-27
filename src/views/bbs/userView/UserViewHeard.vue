@@ -19,7 +19,7 @@
         <el-button
           plain
           type="small"
-          @click="handleClickShowAvatar(),handleClickAvatarPass()"
+          @click="handleClickShowAvatar(), handleClickAvatarPass()"
         >修改头像</el-button>
       </div>
     </div>
@@ -44,7 +44,7 @@
     <!-- 上传头像 -->
     <el-dialog
       :center="true"
-      title="编辑个人信息"
+      title="修改头像"
       :visible.sync="avatarShow"
     >
       <el-upload
@@ -59,6 +59,7 @@
       >
         <el-avatar
           v-if="avatar"
+          :key="avatar"
           :size="100"
           :src="avatar"
         />
@@ -84,7 +85,7 @@ export default {
   name: 'UserViewHeard',
   data() {
     return {
-      UserInfo: { _id: '', avatar: 'aa', nickname: '' },
+      UserInfo: { _id: '', avatar: '', nickname: '' },
       userItem: {
         show: false,
         _id: '',
@@ -111,7 +112,18 @@ export default {
         this.$store.dispatch('user/getInfo')
       }
     },
-    beforeAvatarUpload() {},
+    beforeAvatarUpload(file) {
+      const isImage = file.type?.includes('image')
+      const isLt5M = file.size / 1024 / 1024 <= 5
+      if (!isImage) {
+        this.avatar = this.UserInfo.avatar
+        this.$message.error('请上传图片类型的文件')
+      }
+      if (!isLt5M) {
+        this.$message.error('上传文件大小必须小于5MB')
+      }
+      return isImage && isLt5M
+    },
     freshImg(file) {
       this.imgObj = file.raw
       const fr = new FileReader()
@@ -154,7 +166,7 @@ export default {
       })
       if (res.code === 0) {
         this.UserInfo = res.result.data
-        this.UserInfo.avatar = `http://localhost:8081${this.UserInfo.avatar}`
+        this.UserInfo.avatar = `${this.UserInfo.avatar}`
       }
     }
   }

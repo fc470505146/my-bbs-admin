@@ -36,19 +36,29 @@ export default {
   watch: {
     $route() {
       this.getBreadcrumb()
+    },
+    currentPost() {
+      this.getBreadcrumb()
     }
   },
   created() {
     this.getBreadcrumb()
   },
   methods: {
-    getBreadcrumb() {
+    async getBreadcrumb() {
       // only show routes with meta.title
       let matched = this.$route.matched.filter(
         item => item.meta && item.meta.title
       )
       // 添加特殊情况单独增加
+
       if (this.$route.meta.title === '帖子') {
+        if (!this.currentPost.boardId) {
+          await this.$store.dispatch(
+            'bbs/getCurrentPost',
+            this.$route.params.id
+          )
+        }
         matched = [
           matched[0],
           {

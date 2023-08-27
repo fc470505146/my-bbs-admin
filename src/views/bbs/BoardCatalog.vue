@@ -5,21 +5,27 @@
         <el-col :key="item._id" :span="12" :xs="24">
           <div
             class="catalogContent"
-            :style="{ 'border-top': `5px solid ${indexColorList[index % 4]}` }"
+            :style="{
+              'border-top': `5px solid ${indexColorList[index % 4]}`,
+            }"
           >
             <router-link
               :to="`/bbs/${item._id}`"
             ><div class="BoardTitle">
               <span
                 class="BoardIndex"
-                :style="{ 'background-color': indexColorList[index % 4] }"
+                :style="{
+                  'background-color': indexColorList[index % 4],
+                }"
               >{{ index }}区</span>
               <span class="BoardName">{{ item.boardName }}</span>
               <i class="el-icon-arrow-right" /></div></router-link>
 
             <el-divider />
             <div class="boardDescription">
-              <span style="color: #191c22; font-weight: 500">简介:</span>
+              <span
+                style="color: #191c22; font-weight: 500"
+              >简介:</span>
               <span style="color: #4e5158">
                 {{ item.description }}
               </span>

@@ -6,9 +6,9 @@
     <div class="post-landlord">
       <div class="landloard-user">
         <el-avatar
-          :key="avatar"
+          :key="currentPost.User.avatar"
           :size="50"
-          :src="`http://localhost:8081${avatar}`"
+          :src="`${currentPost.User.avatar}`"
         />
         <div class="landloard-info">
           <div>
@@ -16,7 +16,7 @@
               <router-link :to="`/bbs/user/${currentPost.User._id}`">
                 {{ currentPost.User.nickname }}</router-link>
             </span>
-            <span class="createtime">2022-01-14 11:42:59</span>
+            <span class="createtime">{{ currentPost.lastModified }}</span>
           </div>
           <div style="font-size: 14px">{{ currentPost.title }}</div>
         </div>
@@ -48,7 +48,6 @@
   </div>
 </template>
 <script>
-import { getAvatarAPI } from '@/api/user'
 import { mapGetters } from 'vuex'
 import { addCollectionAPI, delCollectionAPI } from '@/api/bbs'
 import { addRecommendAPI, delRecommendAPI } from '@/api/detail'
@@ -56,20 +55,21 @@ export default {
   name: 'PostViewHeard',
   data() {
     return {
-      avatar: ''
     }
   },
   computed: {
     ...mapGetters(['currentPost', 'isInCollection', 'isRecommend'])
   },
   created() {
-    this.getAvatar()
     this.getCurrentPost()
   },
   methods: {
     // 获取当前Post
     getCurrentPost() {
-      this.$store.dispatch('bbs/getCurrentPost', this.$route.params.id)
+      this.$store.dispatch(
+        'bbs/getCurrentPost',
+        this.$route.params.id
+      )
     },
     // 处理推荐
     async handleRecommend() {
@@ -87,14 +87,14 @@ export default {
     },
 
     // 通过用户ID获得用户头像
-    async getAvatar() {
-      const res = await getAvatarAPI({
-        _id: this.currentPost.User._id
-      })
-      if (res.code === 0) {
-        this.avatar = res.result.data.avatar
-      }
-    },
+    // async getAvatar() {
+    //   const res = await getAvatarAPI({
+    //     _id: this.currentPost.User._id
+    //   })
+    //   if (res.code === 0) {
+    //     this.avatar = res.result.data.avatar
+    //   }
+    // },
     handleClickFocus() {
       this.$emit('focus')
     },

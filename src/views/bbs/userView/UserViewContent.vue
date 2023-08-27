@@ -116,7 +116,6 @@ export default {
           )
         })
         this.dataList = res.result?.data.postList
-        console.log(this.dataList)
       }
     },
     // 点击切换

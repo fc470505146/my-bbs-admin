@@ -13,16 +13,14 @@
         <!-- 评论的用户头像 -->
         <el-avatar
           :size="40"
-          :src="`http://localhost:8081${item.User.avatar}`"
+          :src="`${item.User.avatar}`"
         />
         <div class="item-content">
           <!--评论的用户信息  -->
           <div class="item-heard">
             <span class="heard-nickname">
               <router-link :to="`/bbs/user/${item.User._id}`">
-                {{
-                  item.User.nickname
-                }}</router-link>
+                {{ item.User.nickname }}</router-link>
             </span>
             <span class="heard-date">{{ item.createTime }}</span>
           </div>
@@ -32,10 +30,9 @@
             <div v-if="item.quoteId !== '0'" class="review-quote">
               <div class="quote-user">
                 引用@<span class="quote-nickname">
-                  <router-link :to="`/bbs/user/${item.quote.User._id}`">{{
-                    item.quote.User.nickname
-                  }}</router-link>
-                </span>发表的发表的:
+                  <router-link
+                    :to="`/bbs/user/${item.quote.User._id}`"
+                  >{{ item.quote.User.nickname }}</router-link> </span>发表的发表的:
               </div>
               <el-row>
                 <el-col :span="18">
@@ -74,7 +71,10 @@
           </div>
           <!-- 评论相关按钮 -->
           <div class="item-button">
-            <span :class="{'button-light':true,red:item.isLight}" @click="handleLike(item)">
+            <span
+              :class="{ 'button-light': true, red: item.isLight }"
+              @click="handleLike(item)"
+            >
               <span
                 style="margin-right: 0"
                 class="el-icon-s-opportunity"
@@ -99,7 +99,7 @@
       <!-- 引用的评论 -->
       <div class="reply-quote">
         <div class="quote-title">Re:{{ currentPost.title }}</div>
-        <div v-if="reviewItem.quoteId" class="review-quote">
+        <div v-if="reviewItem.quoteId !== '0'" class="review-quote">
           <div class="quote-user">
             引用@<span class="quote-nickname">{{
               quoteItem.User.nickname
@@ -148,9 +148,7 @@
 </template>
 
 <script>
-import BasePagination, {
-  pagination
-} from '@/components/BasePagination'
+import BasePagination from '@/components/BasePagination'
 import { mapGetters } from 'vuex'
 import {
   addReviewAPI,
@@ -161,6 +159,9 @@ import {
 import { Message } from 'element-ui'
 import moment from 'moment'
 import { addLikeAPI, delLikeAPI } from '@/api/detail'
+function getReviewItemReset() {
+  return { quoteUserId: '0', quoteId: '0', content: '' }
+}
 export default {
   name: 'PostViewReview',
   components: { BasePagination },
@@ -168,8 +169,8 @@ export default {
   data() {
     return {
       user: { avatar: '' },
-      pagination,
-      reviewItem: { quoteId: '', content: '' },
+      pagination: { pageNum: 10, total: 10, currentPage: 1 },
+      reviewItem: getReviewItemReset(),
       reviewList: [],
       quoteItem: {},
       updateReview: { _id: '', content: '' },
@@ -190,6 +191,8 @@ export default {
   watch: {
     isFocus() {
       if (this.isFocus) {
+        this.reviewItem = getReviewItemReset()
+        this.quoteItem = {}
         this.$refs.reply.focus()
       }
     }
@@ -248,21 +251,21 @@ export default {
     handleClickFocus(_id, item) {
       this.quoteItem = item
       this.reviewItem.quoteId = _id
+      this.reviewItem.quoteUserId = item.User._id
       this.$refs.reply.focus()
     },
     // 添加评论
     async addReview() {
       const data = {
         ...this.reviewItem,
-        postId: this.$route.params.id
-      }
-      if (!data.quoteId) {
-        data.quoteId = '0'
+        postId: this.$route.params.id,
+        postUserId: this.currentPost.User._id
       }
       const res = await addReviewAPI(data)
       if (res?.code === 0) {
         Message({ message: '回复成功', type: 'success' })
-        this.reviewItem.content = ''
+        this.reviewItem = getReviewItemReset()
+        this.quoteItem = {}
         this.getAllReview()
       }
     },

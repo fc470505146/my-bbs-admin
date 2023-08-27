@@ -14,13 +14,20 @@
       }}</router-link></span>
       <span class="line">|</span>
       <span class="news">
-        <el-badge value="20"><router-link :to="`/bbs/new/${_id}`">消息 </router-link></el-badge>
+        <el-badge
+          :value="noticeNum"
+          :hidden="noticeNum === 0"
+          :max="99"
+        ><router-link
+          :to="`/bbs/new/${_id}`"
+        ><span @click="noticeFindOut">消息</span>
+        </router-link></el-badge>
       </span>
       <span class="line">|</span>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="'http://localhost:8081' + avatar"
+            :src="avatar"
             class="user-avatar"
           >
           <i class="el-icon-caret-bottom" />
@@ -92,6 +99,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import { changePasswordAvatarAPI } from '@/api/user'
 import { Message } from 'element-ui'
+import { getNoticeNumAPI, noticeFindOutAPI } from '@/api/detail'
 
 export default {
   components: {
@@ -133,13 +141,29 @@ export default {
           ...rulePassword,
           { validator: handleConfirmPassword, trigger: 'blur' }
         ]
-      }
+      },
+      noticeNum: 0
     }
+  },
+  created() {
+    this.getNoticeNum()
   },
   computed: {
     ...mapGetters(['_id', 'sidebar', 'avatar', 'name'])
   },
   methods: {
+    // 清空消息
+    async noticeFindOut() {
+      if (this.noticeNum !== 0) { await noticeFindOutAPI() }
+    },
+    // 获取消息数量
+    async getNoticeNum() {
+      const res = await getNoticeNumAPI()
+      if (res.code === 0) {
+        this.noticeNum = res.result.data
+      }
+      setTimeout(this.getNoticeNum, 10000)
+    },
     // 处理密码修改
     subChangePassword() {
       this.$refs.passwordCheck.validate(async valid => {
@@ -261,10 +285,8 @@ export default {
   }
 }
 .el-badge {
-  ::v-deep .el-badge__content{
+  ::v-deep .el-badge__content {
     top: 10px;
   }
-
 }
-
 </style>

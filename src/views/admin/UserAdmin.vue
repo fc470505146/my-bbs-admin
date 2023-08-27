@@ -183,7 +183,6 @@ export default {
   methods: {
     handelChangePage(currentPage) {
       this.pagination.currentPage = currentPage
-      console.log(this.pagination.currentPage)
       this.fetchData()
     },
     async handleSearch(index, row) {
@@ -203,7 +202,6 @@ export default {
     ...useHandleUpdateUser,
     async handeAddOneUser() {
       const { show, ...data } = this.formAddUser
-      console.log(show, data)
       const res = await addUser({ ...data })
       if (res.code === 0) {
         Message({

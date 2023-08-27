@@ -68,7 +68,6 @@ export default {
       const res = await updatePostOneAPI(data)
       if (res.code === 0) {
         Message({ message: '修改成功', type: 'success' })
-        console.log(res)
         this.$emit('updatePostOk')
       }
     }

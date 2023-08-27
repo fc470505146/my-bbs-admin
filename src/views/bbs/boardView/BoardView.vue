@@ -57,9 +57,7 @@
             <el-col :span="10" class="ellipsis post_title" style="">
               <router-link
                 :to="`/bbs/post/${item._id}`"
-              ><span @click="handleClickToPost(item)">{{
-                item.title
-              }}</span></router-link>
+              ><span>{{ item.title }}</span></router-link>
             </el-col>
             <el-col
               class="fs-12"
@@ -149,9 +147,7 @@ import {
   getPostList
 } from '@/api/bbs'
 import { mapGetters } from 'vuex'
-import BasePagination, {
-  pagination
-} from '@/components/BasePagination'
+import BasePagination from '@/components/BasePagination'
 import BoardViewUpdateDialog from './BoardViewUpdateDialog'
 import { Message } from 'element-ui'
 export default {
@@ -162,7 +158,7 @@ export default {
       board: { boardName: '', description: '' },
       postList: [],
       // 处理分页
-      pagination,
+      pagination: { pageNum: 10, total: 10, currentPage: 1 },
       // 处理修改
       updateItem: {},
       showUpdatePost: false,
@@ -229,7 +225,6 @@ export default {
       this.AddPost.show = !this.AddPost.show
     },
     async subAddPost() {
-      console.log(this.PostItem)
       const res = await addPostAPI(this.PostItem)
       if (res.code === 0) {
         Message({ message: '发帖成功', type: 'success' })
@@ -238,7 +233,6 @@ export default {
     },
     // 处理信息存储
     async handleClickToPost(item) {
-      console.log(item)
       await this.$store.commit('bbs/UPDATE_CURRENT_POST', item)
     }
   }

@@ -1,5 +1,6 @@
 import { getPostByIdAPI } from '@/api/bbs'
-
+import { getAvatarAPI } from '@/api/user'
+import moment from 'moment'
 function getDefaultState() {
   return localStorage.bbsState
     ? JSON.parse(localStorage.bbsState)
@@ -17,6 +18,16 @@ const mutations = {
 const actions = {
   async getCurrentPost({ commit }, paylod) {
     const res = await getPostByIdAPI({ _id: paylod })
+    if (res.code === 0) {
+      const data = res.result.data
+      const temp = await getAvatarAPI({
+        _id: data.User._id
+      })
+      data.User.avatar = temp.result.data.avatar
+      data.lastModified = moment(data.lastModified).format(
+        'MM-DD HH:mm'
+      )
+    }
     commit('UPDATE_CURRENT_POST', res.result.data)
   }
 }

@@ -85,3 +85,24 @@ export function getIndexAPI(data) {
     method: 'get'
   })
 }
+
+export function getAllNoticeAPI(data) {
+  return request({
+    url: '/bbs/notice',
+    method: 'get'
+  })
+}
+
+export function getNoticeNumAPI(data) {
+  return request({
+    url: '/bbs/noticeNum',
+    method: 'get'
+  })
+}
+
+export function noticeFindOutAPI(data) {
+  return request({
+    url: '/bbs/noticeFindOut',
+    method: 'get'
+  })
+}

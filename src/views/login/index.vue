@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">新华校园论坛</h3>
       </div>
 
       <el-form-item prop="username">
@@ -55,7 +55,9 @@
         style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
       >Login</el-button>
-
+      <div class="point-username" style="color:#fff;">
+        管理员账号：rootAA 密码：rootAA
+      </div>
     </el-form>
   </div>
 </template>
@@ -80,7 +82,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'asdasd',
+        username: 'useraa',
         password: '123456'
       },
       loginRules: {
@@ -99,7 +101,6 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        console.log(route.query && route.query.redirect)
         this.redirect = route.query && route.query.redirect
       },
       immediate: true
